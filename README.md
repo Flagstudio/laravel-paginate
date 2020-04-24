@@ -5,7 +5,7 @@
 You can pull in the package via composer:
 
 ```bash
-composer require flagstudio/laravel-collection-paginate
+composer require flagstudio/laravel-paginate
 ```
 
 The package will automatically register itself.
