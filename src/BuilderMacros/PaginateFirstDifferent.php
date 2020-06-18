@@ -9,6 +9,7 @@ use Flagstudio\PaginateMacros\Paginators\FirstDifferentLengthAwarePaginator;
  *
  * @param int $firstPerPage
  * @param int $nextPerPage
+ * @param bool $withPrevious
  * @param string $pageName
  * @param int|null $page
  * @param int|null $total
@@ -22,7 +23,7 @@ class PaginateFirstDifferent
 {
     public function __invoke()
     {
-        return function (int $firstPerPage, int $nextPerPage, string $pageName = 'page', int $page = null, int $total = null, array $options = []): FirstDifferentLengthAwarePaginator {
+        return function (int $firstPerPage, int $nextPerPage, bool $withPrevious = false, string $pageName = 'page', int $page = null, int $total = null, array $options = []): FirstDifferentLengthAwarePaginator {
             $total = $total ?: $this->count();
 
             $page = $page ?: FirstDifferentLengthAwarePaginator::resolveCurrentPage($pageName);
@@ -35,7 +36,11 @@ class PaginateFirstDifferent
             $perPage = $page === 1 ? $firstPerPage : $nextPerPage;
             $offset = ($page - 2) * $perPage + $firstPerPage;
 
-            $items = $this->offset($offset)->limit($perPage)->get();
+            if ($withPrevious) {
+                $items = $this->take($offset + $perPage)->get();
+            } else {
+                $items = $this->offset($offset)->limit($perPage)->get();
+            }
 
             return new FirstDifferentLengthAwarePaginator(
                 $items,

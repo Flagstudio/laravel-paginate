@@ -37,11 +37,17 @@ Create a `FirstDifferentLengthAwarePaginator.php` instance which extend `LengthA
 
 ```php
 collect($posts)->paginateFirstDifferent(10, 5); // From Collection instance
-Post::orderBy('created_at', 'desc')->get()->paginateFirstDifferent(5); // From Collection instance
-Post::orderBy('created_at', 'desc')->paginateFirstDifferent(5); // From Builder instance
+Post::orderBy('created_at', 'desc')->get()->paginateFirstDifferent(10, 5); // From Collection instance
+Post::orderBy('created_at', 'desc')->paginateFirstDifferent(10, 5); // From Builder instance
 ```
 
 This paginates the contents of `$posts` with 10 items at first page and 5 items for next pages. `paginateFirstDifferent` accepts same options as [`paginate`](#paginate) but instead of `$perPage` accepts two parameters `$firstPerPage` and `$nextPerPage`
+
+You can also pass third parameter to get all post from first to current page.
+
+```php
+Post::orderBy('created_at', 'desc')->paginateFirstDifferent(10, 5, true);
+```
 
 ### `paginateWithPrevious`
 
